@@ -1,0 +1,5 @@
+---------- INIT SDL LIBRARY ----------
+SDL init... OK
+---------- INIT OPENGL LIBRARY ----------
+OpenGl init... OK
+Loading textures... OK

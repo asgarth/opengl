@@ -1,0 +1,357 @@
+
+int RenderMovie (GLvoid)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      glLoadIdentity();                                                                               // resetta la visuale
+
+      GLfloat y_rot_angle = 360.0f - y_rot_movie;                                       // direzione = angolo di rotazione su Y
+
+	// disabilita blending
+	glDisable (GL_BLEND);
+	glColor4f (1.0f, 1.0f, 1.0f, 1.0f);
+	// controlla l'attivazione della nebbia
+      if (fog)
+	      glEnable(GL_FOG);
+      else
+            glDisable(GL_FOG);
+
+      // TRASFORMAZIONI
+      glRotatef (x_rot_movie, 1.0f, 0.0f, 0.0f);                                                      // rotazione su - giu
+      glRotatef (y_rot_angle, 0.0f, 1.0f, 0.0f);                                             // rotazione verso direzione
+      glTranslatef (0.0, -y_position_movie, 0.0);									// si sposta sull'asse Y
+      // disegna il cielo
+      if (sky_active) {
+	      glTranslatef (0.0, -15.0, 0.0);
+	      glRotatef (sky_angle, 0.0, 1.0, 0.0);
+	      if (draw_snow)
+	      	Genesis_Texture.Usa_Texture (17);
+	      else
+	      	Genesis_Texture.Usa_Texture (8);
+		glCallList(sky_list);									// chiama la lista di visualizzazione del cielo
+		// ripristina posizione
+		glRotatef (-sky_angle, 0.0, 1.0, 0.0);
+		glTranslatef (0.0, 15.0, 0.0);
+	}
+      // TRASFORMAZIONI
+      glTranslatef (-x_position_movie, 0.0, -z_position_movie);                                // traslazione in base alla posizione
+
+      // controlla e disegna la neve
+      if (draw_snow) {
+	      for (int loop = 0; loop < SNOW_NUM; loop++) {
+		      glTranslatef (snow[loop].x, snow[loop].y, snow[loop].z);
+		      glCallList (snow_list);
+		      glTranslatef (-snow[loop].x, -snow[loop].y, -snow[loop].z);
+		      snow[loop].x += (float)sin(angolo_rot * PIOVER180) * 0.1f;
+		      snow[loop].y -= snow[loop].velocita;
+		      snow[loop].z += (float)cos(angolo_rot * PIOVER180) * 0.1f;
+		      if (snow[loop].y < 0.0) {
+			      snow[loop].x = float(rand()%600) / 10.0f - 30.0f;
+				snow[loop].y = float(rand()%3) + 17.0f;
+				snow[loop].z = float(rand()%600) / 10.0f - 30.0f;
+			}
+		}
+	}
+	// disegna un terreno piatto
+      glScalef(0.3, 0.3, 0.3);
+      if (draw_snow)
+      	Genesis_Texture.Usa_Texture (18);
+      else
+      	Genesis_Texture.Usa_Texture (9);
+     	glCallList(ground_list);
+     	glScalef(3.0, 3.0, 3.0);
+	// disegna i triangoli non trasparenti
+	glCallList(trianlge_list);	                                // chiama la lista di visualizzazione del triangolo
+     	// disegna le sfere non trasparenti
+     	for (int loop = 0; loop < Genesis_Open_World.sector.numero_sfere; loop++)
+     	{
+           	if (Genesis_Open_World.sector.sphere[loop].blending == 0) {
+                 	glTranslatef (	Genesis_Open_World.sector.sphere[loop].vertex.x,
+							Genesis_Open_World.sector.sphere[loop].vertex.y,
+							Genesis_Open_World.sector.sphere[loop].vertex.z);
+                 	if (	Genesis_Open_World.sector.sphere[loop].sphere_x_rot != 0.0 ||
+                  	Genesis_Open_World.sector.sphere[loop].sphere_y_rot != 0.0 ||
+                 		Genesis_Open_World.sector.sphere[loop].sphere_z_rot != 0.0) {
+					glRotatef (	angolo_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_x_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_y_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_z_rot);
+			}
+                 	glCallList(sphere_list + loop);                                // chiama la lista di visualizzazione della sfera
+                 	// ripristina posizioni
+                 	if (	Genesis_Open_World.sector.sphere[loop].sphere_x_rot != 0.0 ||
+                  	Genesis_Open_World.sector.sphere[loop].sphere_y_rot != 0.0 ||
+                 		Genesis_Open_World.sector.sphere[loop].sphere_z_rot != 0.0) {
+                 			glRotatef (	-angolo_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_x_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_y_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_z_rot);
+                 	}
+                 	glTranslatef (	- Genesis_Open_World.sector.sphere[loop].vertex.x,
+							- Genesis_Open_World.sector.sphere[loop].vertex.y,
+							- Genesis_Open_World.sector.sphere[loop].vertex.z);
+           	}
+     	}
+     	// disegna i cilindri non trasparenti
+     	for (int loop = 0; loop < Genesis_Open_World.sector.numero_cilindri; loop++)
+            if (Genesis_Open_World.sector.cylinder[loop].blending == 0)
+                 	glCallList (cylinder_list + loop);                                // chiama la lista di visualizzazione del cilindro
+     	// disegna gli alberi generati casualmente
+      glCallList (tree_list);										// chiama la lista di visualizzazione dell'albero
+
+      // controlla se le trasparenza sono attivate
+     	if (blending) {
+           	glEnable (GL_BLEND);                                                                      // abilita blending
+           	glColor4f (1.0f, 1.0f, 1.0f, 0.5f);                                                             // luminosità piena e 0.5 blending
+     	}
+     	// disegna i triangoli trasparenti
+	glCallList(trianlge_list + 1);				// chiama la lista di visualizzazione del triangoli trasparenti
+     	// disegna le sfere trasparenti - blending
+     	for (int loop = 0; loop < Genesis_Open_World.sector.numero_sfere; loop++)
+     	{
+            if (Genesis_Open_World.sector.sphere[loop].blending == 1) {
+			glTranslatef (	Genesis_Open_World.sector.sphere[loop].vertex.x,
+							Genesis_Open_World.sector.sphere[loop].vertex.y,
+							Genesis_Open_World.sector.sphere[loop].vertex.z);
+                 	if (	Genesis_Open_World.sector.sphere[loop].sphere_x_rot != 0.0 ||
+                  	Genesis_Open_World.sector.sphere[loop].sphere_y_rot != 0.0 ||
+                 		Genesis_Open_World.sector.sphere[loop].sphere_z_rot != 0.0) {
+					glRotatef (	angolo_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_x_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_y_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_z_rot);
+			}
+                 	glCallList(sphere_list + loop);                                // chiama la lista di visualizzazione della sfera
+                 	// ripristina posizioni
+                 	if (	Genesis_Open_World.sector.sphere[loop].sphere_x_rot != 0.0 ||
+                  	Genesis_Open_World.sector.sphere[loop].sphere_y_rot != 0.0 ||
+                 		Genesis_Open_World.sector.sphere[loop].sphere_z_rot != 0.0) {
+                  		glRotatef (	-angolo_rot,
+     	            					Genesis_Open_World.sector.sphere[loop].sphere_x_rot,
+           	      					Genesis_Open_World.sector.sphere[loop].sphere_y_rot,
+                 						Genesis_Open_World.sector.sphere[loop].sphere_z_rot);
+                 	}
+                 	glTranslatef (	- Genesis_Open_World.sector.sphere[loop].vertex.x,
+							- Genesis_Open_World.sector.sphere[loop].vertex.y,
+							- Genesis_Open_World.sector.sphere[loop].vertex.z);
+		}
+     	}
+     	// disegna i cilindri trasparenti - blending
+     	for (int loop = 0; loop < Genesis_Open_World.sector.numero_cilindri; loop++)
+            if (Genesis_Open_World.sector.cylinder[loop].blending == 1)
+                 	glCallList(cylinder_list + loop);                                // chiama la lista di visualizzazione del cilindro
+
+	// gestione angoli di rotazione e posizione su y
+      if (angolo_rot >= 360.0)
+	     	angolo_rot = 0.0;
+	angolo_rot += 1.5;
+	if (sky_angle >= 360.0)
+      	sky_angle = 0.0;
+      sky_angle += 0.1;
+
+      switch (movie_step) {
+		case 0: 	x_position_movie = (float)sin(y_rot_movie * PIOVER180) * 20.0f;
+      			z_position_movie = (float)cos(y_rot_movie * PIOVER180) * 20.0f;
+				y_rot_movie += 3.0f;
+				if (y_rot_movie >= 360.0) {
+					movie_step = 7;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+	      case 1: 	x_position_movie += 0.25f;
+				if (x_position_movie >= 10.0) {
+					movie_step = 6;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 2: 	x_position_movie = -11.0f;
+				x_position_movie += (float)sin(y_rot_movie * PIOVER180) * 1.3f;
+      			z_position_movie = (float)cos(y_rot_movie * PIOVER180) * 1.3f;
+				y_rot_movie += 2.0f;
+				if (y_rot_movie >= 360.0) {
+					movie_step = 3;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 3: 	x_position_movie -= 0.2f;
+      			z_position_movie -= 0.3f;
+      			if ((x_position_movie >= -4.0 && z_position_movie >= -6.0) && (x_position_movie <= 4.0 && z_position_movie <= 6.0)) {
+      				y_rot_movie += 4.5f;
+      				x_position_movie += 0.1f;
+      				z_position_movie += 0.15f;
+      			}
+				if (x_position_movie <= -10.0 && z_position_movie <= -15.0) {
+					movie_step = 5;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 4: 	x_position_movie += 0.2f;
+      			z_position_movie -= 0.3f;
+      			if ((x_position_movie >= -4.0 && z_position_movie >= -6.0) && (x_position_movie <= 4.0 && z_position_movie <= 6.0)) {
+      				y_rot_movie += 4.5f;
+      				x_position_movie -= 0.1f;
+      				z_position_movie += 0.15f;
+      			}
+				if (x_position_movie >= 10.0 && z_position_movie <= -15.0) {
+					movie_step = 8;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 5: 	x_position_movie = 9.0f;
+				x_position_movie += (float)sin(y_rot_movie * PIOVER180) * 1.2f;
+      			z_position_movie = (float)cos(y_rot_movie * PIOVER180) * 1.2f;
+				y_rot_movie += 2.0f;
+				if (y_rot_movie >= 1440.0) {
+					movie_step = 1;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 6: 	z_position_movie = 11.2f;
+				x_position_movie = (float)sin(y_rot_movie * PIOVER180) * 3.5f;
+      			z_position_movie += (float)cos(y_rot_movie * PIOVER180) * 3.5f;
+				y_rot_movie += 2.0f;
+				if (y_rot_movie >= 360.0) {
+					movie_step = 4;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 7: 	z_position_movie -= 0.25f;
+				if (z_position_movie <= -9.0) {
+					movie_step = 2;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 8: 	z_position_movie = -9.0f;
+				x_position_movie = (float)sin(y_rot_movie * PIOVER180) * 1.8f;
+      			z_position_movie += (float)cos(y_rot_movie * PIOVER180) * 1.8f;
+				y_rot_movie += 3.0f;
+				if (y_rot_movie >= 360.0) {
+					movie_step = 9;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+		case 9: 	y_position_movie -= 0.2f;
+				z_position_movie += 0.6f;
+				if (y_position_movie <= 0.5 && z_position_movie >= 10.0) {
+					movie_step = 0;
+					x_position_movie = x_start_pos[movie_step];
+					y_position_movie = y_start_pos[movie_step];
+					z_position_movie = z_start_pos[movie_step];
+					y_rot_movie = y_start_rot[movie_step];
+					x_rot_movie = x_start_rot[movie_step];
+				}
+				break;
+      }
+
+      // disegna il testo con blending attivo
+      glEnable (GL_BLEND);
+      Genesis_Texture.Usa_Texture (14);
+      if ((tipo_testo >= 0.0) && (tipo_testo <= 1.0))
+      	glColor4f (0.0f, 0.0f, 1.0f, 1.0f);
+      if ((tipo_testo > 1.0) && (tipo_testo < 2.0))
+      	glColor4f (0.0f, 0.5f, 0.5f, 1.0f);
+      if ((tipo_testo >= 2.0) && (tipo_testo <= 3.0))
+      	glColor4f (0.0f, 1.0f, 0.0f, 1.0f);
+      OpenWork.glPrint (0, screen_height - 17, "Premere  'E'  per iniziare", 0, screen_width, screen_height);
+
+      tipo_testo += 0.25;
+      if (tipo_testo >= 3.0)
+      	tipo_testo = 0.0;
+      glFlush ();
+      return true;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// FUNZIONE CHE CONTROLLA LA PRESSIONE DEI TASTI DURANTE IL FILMATO
+void Genesis_Movie_Controller ()
+{
+      // L = abilita / disabilita luce
+      if (OpenWork.keys['L'] && !lp) {                                        // L premuto e rilasciato?
+            lp = true;
+            light = !light;                                                         // inverti il valore di light
+            if (!light) {
+                  glDisable (GL_LIGHTING);                                    // disable light
+                  glFogfv (GL_FOG_COLOR, fog_color_light);			// cambia il colore nebbia
+            }
+		else {
+                  glEnable (GL_LIGHTING);                               // enable light
+                  glFogfv (GL_FOG_COLOR, fog_color_night);			// cambia il colore nebbia
+		}
+	}
+      if (!OpenWork.keys['L'])
+            lp = false;
+
+      // E = inizia / finisce filmato
+      if (OpenWork.keys['E'] && !ep) {                                        // B premuto e rilasciato?
+            ep = true;
+            // ripristina posizioni iniziali
+            movie_step = 0;
+		x_position_movie = x_start_pos[movie_step];
+		y_position_movie = y_start_pos[movie_step];
+		z_position_movie = z_start_pos[movie_step];
+		y_rot_movie = y_start_rot[movie_step];
+		x_rot_movie = x_start_rot[movie_step];
+            show_m = !show_m;                                                   // inverti il valore di blending
+      }
+      if (!OpenWork.keys['E'])
+            ep = false;
+
+	// N = attiva / disattiva la neve
+	if (OpenWork.keys['N'] && !np) {
+            np = true;
+            draw_snow = !draw_snow;
+      }
+      if (!OpenWork.keys['N'])
+            np = false;
+
+      // Z = cambia il tipo di filmato
+	if (OpenWork.keys['Z'] && !zp) {
+            zp = true;
+            movie_step++;
+            if (movie_step > 9)
+            	movie_step = 0;
+		x_position_movie = x_start_pos[movie_step];
+		y_position_movie = y_start_pos[movie_step];
+		z_position_movie = z_start_pos[movie_step];
+		y_rot_movie = y_start_rot[movie_step];
+		x_rot_movie = x_start_rot[movie_step];
+      }
+      if (!OpenWork.keys['Z'])
+            zp = false;
+}

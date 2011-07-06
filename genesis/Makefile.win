@@ -1,0 +1,46 @@
+# Project: Genesis
+# Makefile created by Dev-C++ 4.9.6.0
+
+CC   = g++.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = Frustum.o Genesis_Camera.o Genesis_Main.o Genesis_Terrain.o Genesis_World.o OpenGL_Genesis.o Particle_Engine.o Texture_Manager.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -lopengl32 -lglu32 -lglaux -lwinmm
+INCS =  -I"C:/Dev-Cpp/include"  -I"C:/Dev-Cpp/include/g++-3"  -I"C:/Dev-Cpp/include" 
+BIN  = Genesis.exe
+CFLAGS = $(INCS)  -s -O3 -mwindows
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before Genesis.exe all-after
+
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(OBJ) -o "Genesis.exe" $(LIBS) $(CFLAGS)
+
+Frustum.o: Frustum.cpp Frustum.h Genesis_Includes.h
+	$(CC) -c Frustum.cpp -o Frustum.o $(CFLAGS)
+
+Genesis_Camera.o: Genesis_Camera.cpp 
+	$(CC) -c Genesis_Camera.cpp -o Genesis_Camera.o $(CFLAGS)
+
+Genesis_Main.o: Genesis_Main.cpp 
+	$(CC) -c Genesis_Main.cpp -o Genesis_Main.o $(CFLAGS)
+
+Genesis_Terrain.o: Genesis_Terrain.cpp 
+	$(CC) -c Genesis_Terrain.cpp -o Genesis_Terrain.o $(CFLAGS)
+
+Genesis_World.o: Genesis_World.cpp Genesis_World.h Genesis_Includes.h
+	$(CC) -c Genesis_World.cpp -o Genesis_World.o $(CFLAGS)
+
+OpenGL_Genesis.o: OpenGL_Genesis.cpp 
+	$(CC) -c OpenGL_Genesis.cpp -o OpenGL_Genesis.o $(CFLAGS)
+
+Particle_Engine.o: Particle_Engine.cpp 
+	$(CC) -c Particle_Engine.cpp -o Particle_Engine.o $(CFLAGS)
+
+Texture_Manager.o: Texture_Manager.cpp 
+	$(CC) -c Texture_Manager.cpp -o Texture_Manager.o $(CFLAGS)

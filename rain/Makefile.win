@@ -1,0 +1,55 @@
+# Project: Rain
+# Makefile created by Dev-C++ 4.9.6.0
+
+CC   = g++.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = Enemy_Fire.o Frustum.o OpenGL_Genesis.o Rain_Enemy.o Rain_EXPL.o Rain_Fire.o Rain_Main.o Rain_TNT.o Rain_XPL_DISK.o Texture_Manager.o Rain_Pup.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -lopengl32 -lglu32 -lglaux -lwinmm
+INCS =  -I"C:/Dev-Cpp/include"  -I"C:/Dev-Cpp/include/g++-3"  -I"C:/Dev-Cpp/include" 
+BIN  = Rain.exe
+CFLAGS = $(INCS)  -s -O3 -mwindows
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before Rain.exe all-after
+
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(OBJ) -o "Rain.exe" $(LIBS) $(CFLAGS)
+
+Enemy_Fire.o: Enemy_Fire.cpp Enemy_Fire.h Rain_Includes.h
+	$(CC) -c Enemy_Fire.cpp -o Enemy_Fire.o $(CFLAGS)
+
+Frustum.o: Frustum.cpp Frustum.h Rain_Includes.h
+	$(CC) -c Frustum.cpp -o Frustum.o $(CFLAGS)
+
+OpenGL_Genesis.o: OpenGL_Genesis.cpp OpenGL_Genesis.h Rain_Includes.h
+	$(CC) -c OpenGL_Genesis.cpp -o OpenGL_Genesis.o $(CFLAGS)
+
+Rain_Enemy.o: Rain_Enemy.cpp Rain_Enemy.h Rain_Includes.h
+	$(CC) -c Rain_Enemy.cpp -o Rain_Enemy.o $(CFLAGS)
+
+Rain_EXPL.o: Rain_EXPL.cpp Rain_EXPL.h Rain_Includes.h Rain_Enemy.h
+	$(CC) -c Rain_EXPL.cpp -o Rain_EXPL.o $(CFLAGS)
+
+Rain_Fire.o: Rain_Fire.cpp Rain_Fire.h Rain_Includes.h
+	$(CC) -c Rain_Fire.cpp -o Rain_Fire.o $(CFLAGS)
+
+Rain_Main.o: Rain_Main.cpp 
+	$(CC) -c Rain_Main.cpp -o Rain_Main.o $(CFLAGS)
+
+Rain_TNT.o: Rain_TNT.cpp 
+	$(CC) -c Rain_TNT.cpp -o Rain_TNT.o $(CFLAGS)
+
+Rain_XPL_DISK.o: Rain_XPL_DISK.cpp 
+	$(CC) -c Rain_XPL_DISK.cpp -o Rain_XPL_DISK.o $(CFLAGS)
+
+Texture_Manager.o: Texture_Manager.cpp 
+	$(CC) -c Texture_Manager.cpp -o Texture_Manager.o $(CFLAGS)
+
+Rain_Pup.o: Rain_Pup.cpp Rain_Pup.h Rain_Includes.h
+	$(CC) -c Rain_Pup.cpp -o Rain_Pup.o $(CFLAGS)

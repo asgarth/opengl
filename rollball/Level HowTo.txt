@@ -1,0 +1,46 @@
+ISTRUZIONI PER CREARE I LIVELLI:
+
+- prima riga: 		numero di salti da poter usare durante il livello
+- seconda riga:	numero di poligoni che conpongono i livelli (contare e aggiungerli alla fine)
+
+- dopo terza riga:	inizio poligoni, si possono mettere poligoni qualsiasi ma sempre di 4 lati
+					l'unica cosa a cui prestare attenzione sono i vertici, da inserire in quest'ordine
+						-vertice in alto a destra
+						-in alto a sinistra
+						-in basso a destra
+						-in basso a sinistra
+					se aggiungete poligoni che non sono quadrati o rettangoli diventa un po' + complicato, cioè non esiste un ordine esatto
+					per inserire i poligoni,dipende dalle coordinate,provate a cambiare l'ordine e tutto funzionerà :)
+
+					aggiungere le texture diventa un po' complicato se la figura non è un quadrato perfetto,
+					se volete sapere come fare dovrò spiegarvelo a voce :)
+
+					dopo i 4 vertici vanno inseriti: altezza del poligono, trasparenza (1 per si, 0 per no) e numero di texture
+					(come indicato in fondo), se il numero di texture è 0 o è maggiore di 9 ne viene scelta una a caso
+
+- le ultime righe sono:	ARRIVO con le coordinate X di destra, X di sinistra, Z
+							e altezza (da mettere come quella del poligono su cui si trova l'arrivo)
+
+							LEVEL DESIGN: mettere nella riga subito sotto questa il nome di chi ha creato il livello
+
+							NEXT LEVEL: mettere nella riga subito sotto questa il nome (completo) del file da cui leggere il prossimo livello
+							(se per esempio volete creare un livello dopo il quarto e prima del quinto mettete il nome del vostro .TXT in fondo al
+							quarto livello e in fondo al vostro mettete il nome del quinto)
+
+ricordate che la sfera parte sempre da coordinate X = 0 e Z = 0 quindi fate in modo che sotto queste coordinate ci sia sempre un poligono :)
+
+Data\Level0.txt deve sempre essere il primo livello
+
+
+ELENCO NUMERI TEXTURE:
+0- riservata (per il testo)
+1- cielo scuro
+2- cielo scuro
+3- cielo sereno
+4- pavimento nero
+5- pavimento rosso
+6- pavimento verde
+7- pavimento giallo
+8- vetro bianco
+9- vetro blu
+10- neve

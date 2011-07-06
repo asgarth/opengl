@@ -1,0 +1,9 @@
+Project: R.A.C.E. - Config File
+
+screen_width = 800
+screen_height = 600
+bpp = 32
+fullscreen = 0
+limit_fps = 0
+
+server_port = 5433

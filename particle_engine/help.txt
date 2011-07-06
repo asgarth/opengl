@@ -1,0 +1,16 @@
+SPACE: pause
+
+KEYBOARD ARROW:
+	UP: 		zoom +
+	DOWN:		zoom -
+	LEFT:		rotate left
+	RIGHT: 	rotate right
+	
+CONTROL GRAVITY:
+	W:			UP 	(y axis +)
+	S:			DOWN 	(y axis -)
+	D:			RIGHT (x axis +)
+	A:			LEFT 	(x axis -)
+	Q:			FRONT (z axis +)
+	Z:			BACK 	(z axis -)
+	X o R:	RESET

@@ -1,0 +1,22 @@
+NUMERO_ENGINE		3
+
+NUMERO_PARTICELLE_ENGINE	250
+// slowdown		-	lato		- fade_MAX (INT, velocità con cui la particella si spegne)	-	fade_MIN
+// posizione ( X Y Z )
+// valori della gravità del sistema su X Y Z
+1
+1.0 		0.35	20		0.01
+10.0		0.4		0.0
+0.0		0.0		0.0
+
+NUMERO_PARTICELLE_ENGINE	200
+1
+1.0 		1.0		20		0.03
+-6.5		2.0		-6.5
+-1.0		0.0		0.5
+
+NUMERO_PARTICELLE_ENGINE	350
+2
+1.0 		0.4		25		0.045
+-6.5		0.0		6.0
+-0.1		0.6		-0.1

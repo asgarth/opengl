@@ -1,0 +1,38 @@
+NUMERO_SALTI		4
+NUMERO_POLIGONI 	4
+
+// coordinate x, z, u, v   X4
+// altezza, blending, texture
+
+// il primo poligono deve essere quello di partenza
+2.0		2.0		1.0		1.0
+-2.0	2.0		0.0		1.0
+2.0		-2.0	1.0		0.0
+-2.0	-2.0	0.0		0.0
+12.0	0	7
+
+2.0		6.0		1.0		1.0
+-2.0	6.0		0.0		1.0
+2.0		2.0		1.0		0.0
+-2.0	2.0		0.0		0.0
+13.0	0	7
+
+2.0		12.0	1.0		1.5
+-2.0	12.0	0.0		1.5
+2.0		6.0		1.0		0.0
+-2.0	6.0		0.0		0.0
+14.0	0	7
+
+1.5		24.0	3.0		1.0
+-1.5	24.0	0.0		1.0
+1.5		23.0	3.0		0.0
+-1.5	23.0	0.0		0.0
+8.0		1	9
+
+ARRIVO	1.2		-1.2	23.5		8.0
+
+LEVEL DESIGN:
+mosquiton
+
+NEXT LEVEL:
+Data/Level_6.txt

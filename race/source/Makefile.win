@@ -1,0 +1,72 @@
+# Project: Race
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = ../obj/Race_private.res
+OBJ  = ../obj/main.o ../obj/SDL_GL_Init.o ../obj/Menu.o ../obj/Text.o ../obj/Texture_Manager.o ../obj/Client_Network.o ../obj/Server_Network.o ../obj/Frustum.o ../obj/Terrain.o ../obj/Object3D.o ../obj/Player.o ../obj/Sky.o ../obj/Display.o ../obj/Enemy.o $(RES)
+LINKOBJ  = ../obj/main.o ../obj/SDL_GL_Init.o ../obj/Menu.o ../obj/Text.o ../obj/Texture_Manager.o ../obj/Client_Network.o ../obj/Server_Network.o ../obj/Frustum.o ../obj/Terrain.o ../obj/Object3D.o ../obj/Player.o ../obj/Sky.o ../obj/Display.o ../obj/Enemy.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_net -lopengl32 -lglu32 -mwindows  
+INCS =  -I"C:/Dev-Cpp/include" 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
+BIN  = ../Race.exe
+CXXFLAGS = $(CXXINCS)   -O3
+CFLAGS = $(INCS)   -O3
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before ../Race.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "..\Race.exe" $(LIBS)
+
+../obj/main.o: main.cpp
+	$(CPP) -c main.cpp -o ../obj/main.o $(CXXFLAGS)
+
+../obj/SDL_GL_Init.o: SDL_GL_Init.cpp
+	$(CPP) -c SDL_GL_Init.cpp -o ../obj/SDL_GL_Init.o $(CXXFLAGS)
+
+../obj/Menu.o: Menu.cpp
+	$(CPP) -c Menu.cpp -o ../obj/Menu.o $(CXXFLAGS)
+
+../obj/Text.o: Text.cpp
+	$(CPP) -c Text.cpp -o ../obj/Text.o $(CXXFLAGS)
+
+../obj/Texture_Manager.o: Texture_Manager.cpp
+	$(CPP) -c Texture_Manager.cpp -o ../obj/Texture_Manager.o $(CXXFLAGS)
+
+../obj/Client_Network.o: Client_Network.cpp
+	$(CPP) -c Client_Network.cpp -o ../obj/Client_Network.o $(CXXFLAGS)
+
+../obj/Server_Network.o: Server_Network.cpp
+	$(CPP) -c Server_Network.cpp -o ../obj/Server_Network.o $(CXXFLAGS)
+
+../obj/Frustum.o: Frustum.cpp
+	$(CPP) -c Frustum.cpp -o ../obj/Frustum.o $(CXXFLAGS)
+
+../obj/Terrain.o: Terrain.cpp
+	$(CPP) -c Terrain.cpp -o ../obj/Terrain.o $(CXXFLAGS)
+
+../obj/Object3D.o: Object3D.cpp
+	$(CPP) -c Object3D.cpp -o ../obj/Object3D.o $(CXXFLAGS)
+
+../obj/Player.o: Player.cpp
+	$(CPP) -c Player.cpp -o ../obj/Player.o $(CXXFLAGS)
+
+../obj/Sky.o: Sky.cpp
+	$(CPP) -c Sky.cpp -o ../obj/Sky.o $(CXXFLAGS)
+
+../obj/Display.o: Display.cpp
+	$(CPP) -c Display.cpp -o ../obj/Display.o $(CXXFLAGS)
+
+../obj/Enemy.o: Enemy.cpp
+	$(CPP) -c Enemy.cpp -o ../obj/Enemy.o $(CXXFLAGS)
+
+../obj/Race_private.res: Race_private.rc 
+	$(WINDRES) -i Race_private.rc --input-format=rc -o ../obj/Race_private.res -O coff 

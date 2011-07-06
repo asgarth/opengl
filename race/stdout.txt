@@ -1,0 +1,33 @@
+SDL init... OK
+SDLNet init... OK
+Loading textures... OK
+Init font... OK
+
+GENERATING SKY
+	Vertex num: 576
+
+LOADING TERRAIN...
+	Map file: map/terrain_map.jpg
+	Vertex num: 16384
+
+GENERATING SKY
+	Vertex num: 576
+	Loading shader file (models/shader.txt)...OK
+	Loading model file (models/model_1.txt)...OK
+
+LOADING TERRAIN...
+	Map file: map/terrain_map.jpg
+	Vertex num: 16384
+
+LOADING TERRAIN...
+	Map file: map/terrain_map.jpg
+	Vertex num: 16384
+
+GENERATING SKY
+	Vertex num: 576
+
+----------RELEASE MEMORY----------
+Threads closed
+Objetcs Memory Released
+Enemy Memory Released
+SDL Quit
