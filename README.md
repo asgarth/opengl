@@ -3,7 +3,7 @@ A collection of small games, demos and other applications developed using the Op
 ### R.A.C.E.
 R.A.C.E (_Race And Combat Environment_) is a 3D combat game with multiplayer support. Game is incomplete but basic rendering and network functionality are implemented.
 
-![R.A.C.E. 01](https://github.com/asgarth/opengl/raw/master/images/race_02.jpg)
+![R.A.C.E. 01](https://github.com/asgarth/opengl/raw/master/images/race_01.jpg)
 ![R.A.C.E. 02](https://github.com/asgarth/opengl/raw/master/images/race_02.jpg)
 ![R.A.C.E. 03](https://github.com/asgarth/opengl/raw/master/images/race_03.jpg)
 
@@ -15,7 +15,7 @@ Particle Engine demo show a simple implementation of a random generated particle
 Flock demo implement a set of objects (flock) that follow mouse pointer over the screen. If you want to know more about flocks you can read [this](http://www.red3d.com/cwr/papers/1987/SIGGRAPH87.pdf) article.
 
 ![Particle 01](https://github.com/asgarth/opengl/raw/master/images/particle_01.jpg)
-![Particle 02](https://github.com/asgarth/opengl/raw/master/images/particle_01.jpg)
+![Particle 02](https://github.com/asgarth/opengl/raw/master/images/particle_02.jpg)
 ![Flock](https://github.com/asgarth/opengl/raw/master/images/flock.jpg)
 
 ### CodeX
