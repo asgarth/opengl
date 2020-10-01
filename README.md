@@ -21,11 +21,11 @@ Flock demo implement a set of objects (flock) that follow mouse pointer over the
 ### CodeX
 A screen saver that display text in a Matrix style using lines in its source code.
 
-### RaiN
+### Rain
 A space shooter platform where enemy are generated at random during the game.
 
 ### RollBall
 RollBall is a classic game where a ball rotate over a plane controlled with mouse. Move the mouse to take the ball at the end of each level.
 
 ### Genesis
-Genesis is an application that create a 3D world from a map file and show a lot of graphic effect with OpenGL.
+Genesis is an application that create a 3DWorld from a map file and show a lot of Graphic Effect with OpenGL.
